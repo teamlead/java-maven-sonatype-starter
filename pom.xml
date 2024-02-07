@@ -2,14 +2,21 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <!-- FIXME replace with your data -->
   <groupId>pro.teamlead</groupId>
+  <!-- FIXME replace with your data -->
   <artifactId>java-maven-sonatype-starter</artifactId>
 
   <packaging>jar</packaging>
+
+  <!-- FIXME replace with your data -->
   <version>1.0.0</version>
 
+  <!-- FIXME replace with your data -->
   <name>Java Maven Sonatype Starter</name>
+  <!-- FIXME replace with your data -->
   <description>Demo for testing Sonatype publishing with Maven and Gitlab Actions</description>
+  <!-- FIXME replace with your data -->
   <url>https://github.com/teamlead/java-maven-sonatype-starter</url>
 
   <licenses>
@@ -19,6 +26,7 @@
     </license>
   </licenses>
 
+  <!-- FIXME replace with your data -->
   <developers>
     <developer>
       <name>teamlead</name>
@@ -29,11 +37,13 @@
     </developer>
   </developers>
 
+  <!-- FIXME replace with your data -->
   <issueManagement>
     <system>github</system>
     <url>https://github.com/teamlead/java-maven-sonatype-starte/issues</url>
   </issueManagement>
 
+  <!-- FIXME replace with your data -->
   <scm>
     <connection>scm:git:git@github.com:teamlead/java-maven-sonatype-starter.git</connection>
     <developerConnection>scm:git:git@github.com:teamlead/java-maven-sonatype-starter.git</developerConnection>

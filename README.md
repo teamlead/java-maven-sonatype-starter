@@ -1,45 +1,100 @@
-# Java Maven Sonatype Starter
+# Guide to Publishing to Sonatype Central Portal with GitHub Actions
 
-This repository serves as a demonstration project for testing the publishing of Java Maven artifacts to the Sonatype OSSRH (Open Source Software Repository Hosting) using GitHub Actions. It includes a basic Java component, a JUnit test case, and is configured to generate code coverage reports with JaCoCo.
+This guide outlines the steps to publish a Java library to Maven Central via the Sonatype Central Portal, utilizing GitHub Actions for automation. **Please note:** As of February 1st, 2024, the registration process and publishing to Maven Central will exclusively use the Sonatype Central Portal. Users relying on legacy OSSRH publishing methods should transition to the new process. For details on transitioning and support, refer to the [Sonatype documentation](https://central.sonatype.org/register/legacy/).
 
-## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+## Step 1: Create Sonatype Account
 
-### Prerequisites
+Create an account through [Sonatype Central](https://central.sonatype.com/) using an email and password. 
 
-- Java JDK 17 or newer
-- Maven 3.6.0 or newer
+If you sign in using your **existing** GitHub account, the namespace for your account will be automatically validated.
 
-### Installing
+## Step 2: Namespace Configuration and Domain Validation
 
-To get a development environment running, clone the repository to your local machine and install the dependencies using Maven.
+Add and validate [your namespace](https://central.sonatype.com/publishing/namespaces) corresponding to your domain, e.g., `pro.teamlead` for `teamlead.pro`. Additionally, validate the namespace `io.github.YOUR_GITHUB_NAME` by creating a test repository on GitHub. For GitHub users, namespace validation [is automatic](https://central.sonatype.org/register/central-portal/#for-code-hosting-services-with-personal-groupid) upon account creation.
 
-```bash
-git clone https://github.com/teamlead/java-maven-sonatype-starter.git
-cd java-maven-sonatype-starter
-mvn install
+## Step 3: GPG Key Generation and Distribution
+
+Following the [Sonatype GPG requirements](https://central.sonatype.org/publish/requirements/gpg/):
+
+- 3.1 Generate a GPG key (`gpg --full-generate-key`) e.g RSA 4096 / No expire.
+- 3.2 Extract the key YOUR_GPG_KEY_ID (`gpg --list-signatures --keyid-format 0xshort`)
+- 3.3 Distribute it (`gpg --keyserver keyserver.ubuntu.com --send-keys YOUR_GPG_KEY_ID`)
+- 3.4 Export the private key (`gpg --armor --export-secret-key <key-id> > privkey.asc`)
+
+## Step 4: Maven Project Configuration
+
+Configure your `pom.xml` with necessary plugins for publishing to Sonatype. See the project's [pom.xml](https://github.com/teamlead/java-maven-sonatype-starter/blob/master/pom.xml) for an example configuration.
+
+Required plugins:
+
+- central-publishing-maven-plugin
+- maven-source-plugin
+- maven-javadoc-plugin
+- maven-gpg-plugin
+
+## Step 5: GitHub Secrets for Automation
+
+Visit "Actions secrets and variables" page in Github UI (`your_repo/settings/secrets/actions`).
+
+Add secrets to your GitHub repository for automated publishing:
+
+- `NEXUS_USERNAME` and `NEXUS_PASSWORD`: Generated [from your Sonatype account](https://central.sonatype.com/account) User Token.
+- `GPG_PRIVATE_KEY`: The content of `privkey.asc`.
+- `GPG_PASSPHRASE`: Your GPG key passphrase.
+
+
+## Step 6: Automating Publication with GitHub Actions
+
+Create a GitHub Action workflow to automate the publishing process. See [.github/workflows/sonatype-publish.yml](https://github.com/teamlead/java-maven-sonatype-starter/blob/master/.github/workflows/sonatype-publish.yml) for an example.
+
+## Step 7: Publishing Your Library
+
+To publish your library, create a new release through the GitHub UI, which will trigger the automated process. Click "Create a new release" or visit (<your_repo>/releases/new).
+
+To publish manually, add the following to your `~/.m2/settings.xml`:
+
+```xml
+<server>
+    <id>central</id>
+    
+    <!--Sonatype account User Token Data -->
+    <username>xxx</username> 
+    <password>yyy</password>
+    
+</server>
+...
+<profiles>
+  <profile>
+    <id>gpg-key1</id>
+    <properties>
+        <gpg.keyname>$YOUR_GPG_KEY_ID</gpg.keyname>
+        <gpg.passphrase>$YOUR_GPG_SECRET</gpg.passphrase>
+    </properties>
+  </profile>
+</profiles>
 ```
 
-### Running the tests
+Then execute: 
 
-To run the unit tests and generate a code coverage report:
+`mvn clean deploy -Pgpg-key1 -PsonatypeDeploy`.
 
-```bash
-mvn test
+Publishing can take 5-10 minutes. Your library will now be available on Maven Central for use in projects worldwide.
+
+## Step 8: Using the Published Library
+
+Once published, the library can be included as a dependency in Maven projects:
+
+```xml
+<dependency>
+  <groupId>pro.teamlead</groupId>
+  <artifactId>java-maven-sonatype-starter</artifactId>
+  <version>1.0.0</version>
+</dependency>
 ```
 
-### Building the project
+Ensure you replace placeholders like `<your_repo>`, `$YOUR_GPG_...` with your GitHub repository URL and specific GPG and Sonatype credentials in the provided XML snippets.
 
-To compile the project and package it into a JAR file:
-
-```bash
-mvn package
-```
-
-## Publishing to Sonatype
-
-The project is configured with GitHub Actions to automatically publish the packaged JAR to Sonatype OSSRH on every release. The workflow is defined in `.github/workflows/sonatype-publish.yml`. Ensure you have set up the required secrets (`NEXUS_USERNAME` and `NEXUS_PASSWORD`) in your GitHub repository settings for the action to successfully authenticate with Sonatype.
 
 ## Contributing
 
