@@ -2,21 +2,21 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- FIXME replace with your data -->
+  <!-- replace with your data -->
   <groupId>pro.teamlead</groupId>
-  <!-- FIXME replace with your data -->
+  <!-- replace with your data -->
   <artifactId>java-maven-sonatype-starter</artifactId>
 
   <packaging>jar</packaging>
 
-  <!-- FIXME replace with your data -->
+  <!-- replace with your data -->
   <version>1.0.0</version>
 
-  <!-- FIXME replace with your data -->
+  <!-- replace with your data -->
   <name>Java Maven Sonatype Starter</name>
-  <!-- FIXME replace with your data -->
+  <!-- replace with your data -->
   <description>Demo for testing Sonatype publishing with Maven and Gitlab Actions</description>
-  <!-- FIXME replace with your data -->
+  <!-- replace with your data -->
   <url>https://github.com/teamlead/java-maven-sonatype-starter</url>
 
   <licenses>
@@ -26,7 +26,7 @@
     </license>
   </licenses>
 
-  <!-- FIXME replace with your data -->
+  <!-- replace with your data -->
   <developers>
     <developer>
       <name>teamlead</name>
@@ -37,13 +37,13 @@
     </developer>
   </developers>
 
-  <!-- FIXME replace with your data -->
+  <!-- replace with your data -->
   <issueManagement>
     <system>github</system>
     <url>https://github.com/teamlead/java-maven-sonatype-starte/issues</url>
   </issueManagement>
 
-  <!-- FIXME replace with your data -->
+  <!-- replace with your data -->
   <scm>
     <connection>scm:git:git@github.com:teamlead/java-maven-sonatype-starter.git</connection>
     <developerConnection>scm:git:git@github.com:teamlead/java-maven-sonatype-starter.git</developerConnection>
@@ -57,6 +57,11 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <junit.version>5.10.2</junit.version>
+
+    <!-- replace with your data -->
+    <sonar.organization>teamlead</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.projectKey>teamlead_java-maven-sonatype-starter</sonar.projectKey>
   </properties>
 
   <dependencies>
@@ -82,6 +87,7 @@
 
   <profiles>
     <profile>
+      <!-- required, used in .github/workflows/sonatype-publish.yml -->
       <id>sonatypeDeploy</id>
       <build>
         <plugins>
@@ -147,9 +153,14 @@
       </build>
     </profile>
     <profile>
-      <id>coverage</id>
+      <!-- optional: used in .github/workflows/build-and-analyze.yml -->
+      <id>coverageReport</id>
       <build>
         <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.2.5</version>
+          </plugin>
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
@@ -184,10 +195,6 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.12.1</version>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.2.5</version>
       </plugin>
     </plugins>
   </build>

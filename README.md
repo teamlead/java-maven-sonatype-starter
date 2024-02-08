@@ -1,7 +1,8 @@
-# Guide to Publishing to Sonatype Central Portal with GitHub Actions
+# Guide to Publishing to Maven Central via the Sonatype Central Portal with GitHub Actions
 
-This guide outlines the steps to publish a Java library to Maven Central via the Sonatype Central Portal, utilizing GitHub Actions for automation. **Please note:** As of February 1st, 2024, the registration process and publishing to Maven Central will exclusively use the Sonatype Central Portal. Users relying on legacy OSSRH publishing methods should transition to the new process. For details on transitioning and support, refer to the [Sonatype documentation](https://central.sonatype.org/register/legacy/).
+This guide provides a comprehensive walkthrough for publishing a Java library to Maven Central, utilizing the Sonatype Central Portal for submission and GitHub Actions to automate the process. Please note: Starting from February 1st, 2024, the process for registering and publishing artifacts to Maven Central requires the use of the Sonatype Central Portal. Developers who have previously relied on older OSSRH (OSS Repository Hosting) methods for publishing are encouraged to transition to this updated process. For details on transitioning and support, refer to the [Sonatype documentation](https://central.sonatype.org/register/legacy/).
 
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=teamlead_java-maven-sonatype-starter&metric=coverage)](https://sonarcloud.io/summary/new_code?id=teamlead_java-maven-sonatype-starter) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=teamlead_java-maven-sonatype-starter&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=teamlead_java-maven-sonatype-starter) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=teamlead_java-maven-sonatype-starter&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=teamlead_java-maven-sonatype-starter)
 
 ## Step 1: Create Sonatype Account
 
